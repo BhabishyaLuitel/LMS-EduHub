@@ -1,3 +1,4 @@
+// Importing necessary dependencies and components
 import React, { useState, useEffect } from 'react'
 import {
   Route,
@@ -67,6 +68,7 @@ const App = () => {
   )
 }
 
+// Main component for the authenticated app
 const AuthnticatedApp = () => {
   const [collapsed, setCollapsed] = useState(false)
   const { Content } = Layout
@@ -109,6 +111,7 @@ const AuthnticatedApp = () => {
               <Redirect to="/app/courses" />
             </Route>
 
+            {/* Routes for different pages */}
             <Route path="/app/dashboard" component={Dashboard} />
             <Route path="/app/calendar" component={CourseCalendar} />
 
