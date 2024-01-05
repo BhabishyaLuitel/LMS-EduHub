@@ -1,10 +1,14 @@
+// Importing required modules
 const express = require('express')
 const db = require('./config/database')
 const path = require('path')
 const mongoose = require('mongoose')
 const cors = require('cors')
+
+// Creating an instance of Express app
 const app = express()
 
+// Importing route handlers
 const user = require('./routes/user')
 const assignment = require('./routes/Assignment')
 const article = require('./routes/article')
@@ -23,10 +27,13 @@ const enrollmentRouter = require('./routes/enrollment')
 const deadlineRouter = require('./routes/deadlines')
 const achievementsRouter = require('./routes/achievementsRouter')
 
+// Importing middleware
 const auth = require('./middleware/auth')
 
+// Importing file upload module
 const fileUpload = require('express-fileupload')
 
+// Configuring file upload options
 app.use(
   fileUpload({
     debug: true,
@@ -36,6 +43,7 @@ app.use(
   })
 )
 
+// Connecting to MongoDB
 mongoose
   .connect(process.env.MONGODB_ATLAS_URI, {
     useNewUrlParser: true,
@@ -50,14 +58,22 @@ mongoose
     console.log('error connection to MongoDB:', error.message)
   })
 
+// Setting up the public directory path
 const publicDirectoryPath = path.join(__dirname, './view')
 
+// Serving static files from the public directory
 app.use(express.static(publicDirectoryPath))
 
+// Serving course files
 app.use('/course-file', express.static('course-file'))
+
+// Enabling CORS
 app.use(cors())
 
+// Parsing JSON request bodies
 app.use(express.json())
+
+// Routing requests to appropriate route handlers
 app.use('/users', user)
 app.use('/discussions', discussionsRouter)
 app.use('/announcements', AnnouncementsRouter)
@@ -76,6 +92,7 @@ app.use('/courses/:courseId/modules/:moduleId/module-item', courseModuleItem)
 app.use('/courses/:courseId/lectures', lectureRouter)
 app.use('/achievements', achievementsRouter)
 
+// Starting the server
 const port = process.env.PORT || 4000
 app.listen(port, () => {
   console.log('app is on Port ' + port)
